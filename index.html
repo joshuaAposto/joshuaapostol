@@ -18,10 +18,15 @@
     </style>
 </head>
 <body>
-    <?php
-        $encryptedLink = "aHR0cHM6Ly9hdXRvYm90MC5vbnJlbmRlci5jb20v"; // Base64 encoded link
-        $decodedLink = base64_decode($encryptedLink);
-        echo '<iframe class="ugh" src="' . $decodedLink . '" frameborder="0"></iframe>';
-    ?>
+    <div id="hiddenLink"></div>
+    <script>
+        var encryptedLink = "aHR0cHM6Ly9hdXRvYm90MC5vbnJlbmRlci5jb20v"; // Base64 encoded link
+        var decodedLink = atob(encryptedLink);
+        var iframe = document.createElement('iframe');
+        iframe.className = 'ugh';
+        iframe.src = decodedLink;
+        iframe.frameBorder = '0';
+        document.body.appendChild(iframe);
+    </script>
 </body>
 </html>
