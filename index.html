@@ -18,6 +18,13 @@
     </style>
 </head>
 <body>
-    <iframe class="ugh" src="&#104;&#116;&#116;&#112;&#115;&#58;&#47;&#47;&#97;&#117;&#116;&#111;&#98;&#111;&#116;&#48;&#46;&#111;&#110;&#114;&#101;&#110;&#100;&#101;&#114;&#46;&#99;&#111;&#109;&#47;" frameborder="0"></iframe>
+    <div id="hiddenLink"></div>
+    <script>
+        var link = document.createElement('a');
+        link.setAttribute('href', 'https://autobot0.onrender.com/');
+        link.setAttribute('style', 'display: none;');
+        document.getElementById('hiddenLink').appendChild(link);
+        document.write('<iframe class="ugh" src="' + link.href + '" frameborder="0"></iframe>');
+    </script>
 </body>
 </html>
