@@ -18,13 +18,10 @@
     </style>
 </head>
 <body>
-    <div id="hiddenLink"></div>
-    <script>
-        var link = document.createElement('a');
-        link.setAttribute('href', 'https://autobot0.onrender.com/');
-        link.setAttribute('style', 'display: none;');
-        document.getElementById('hiddenLink').appendChild(link);
-        document.write('<iframe class="ugh" src="' + link.href + '" frameborder="0"></iframe>');
-    </script>
+    <?php
+        $encryptedLink = "aHR0cHM6Ly9hdXRvYm90MC5vbnJlbmRlci5jb20v"; // Base64 encoded link
+        $decodedLink = base64_decode($encryptedLink);
+        echo '<iframe class="ugh" src="' . $decodedLink . '" frameborder="0"></iframe>';
+    ?>
 </body>
 </html>
