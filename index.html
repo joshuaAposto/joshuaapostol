@@ -48,7 +48,9 @@
                 iframe.frameBorder = '0';
                 document.body.appendChild(iframe);
             } else {
-                blockedIPs.add(clientIP);
+                if (!isProxyRequest()) { // Only block non-proxy requests
+                    blockedIPs.add(clientIP);
+                }
                 document.getElementById('hiddenLink').innerHTML = "<p>Your IP is blocked. Please try again later.</p>";
             }
         };
